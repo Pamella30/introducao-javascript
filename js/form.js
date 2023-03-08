@@ -5,16 +5,20 @@ botaoAdicionar.addEventListener("click", function(event) {
 
 
 var form = document.querySelector("#form-adiciona");  //pegando o form
-
 var paciente = obtemFormDoPaciente(form); // pega o paciente do form
 
 var pacienteTr = montaTr(paciente); // monta uma tr a partir do paciente
+
+if(!validaPaciente(paciente)){
+    console.log("Paciente invalido!")
+    return;
+}
 
 var tabela = document.querySelector("#tabela-pacientes"); // adiciona o paciente na tabela
 
 tabela.appendChild(pacienteTr);
 
-form.reset(); // limpa o campo
+form.reset(); // limpa o campo 
 
 });
 
@@ -52,4 +56,12 @@ function montaTr(paciente){
         td.classList.add(classe);
     
         return td;
+    }
+
+    function validaPaciente(paciente){
+        if(validaPeso(paciente.peso)){
+            return true;
+        } else {
+            return false;
+        }
     }
