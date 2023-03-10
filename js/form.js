@@ -1,18 +1,24 @@
 var botaoAdicionar = document.querySelector("#adicionar-paciente");
 botaoAdicionar.addEventListener("click", function(event) {
     event.preventDefault();
-    console.log("Oi eu sou o botao e fui clicado");
 
+    var form = document.querySelector("#form-adiciona");  //pegando o form
+    var paciente = obtemFormDoPaciente(form); // pega o paciente do form
 
-var form = document.querySelector("#form-adiciona");  //pegando o form
-var paciente = obtemFormDoPaciente(form); // pega o paciente do form
+    var pacienteTr = montaTr(paciente); // monta uma tr a partir do paciente
 
-var pacienteTr = montaTr(paciente); // monta uma tr a partir do paciente
+    if(!validaPaciente(paciente)){
+        console.log("Paciente invalido!"); 
+        return;
+    }
 
-if(!validaPaciente(paciente)){
-    console.log("Paciente invalido!")
-    return;
-}
+    var erros = validaPaciente(paciente);
+    if(erros.length > 0){
+        var mensagemErro = document.querySelector("#mensagem-erro"); 
+        mensagemErro.textContent = erros;
+        return;
+    }
+
 
 var tabela = document.querySelector("#tabela-pacientes"); // adiciona o paciente na tabela
 
@@ -21,6 +27,7 @@ tabela.appendChild(pacienteTr);
 form.reset(); // limpa o campo 
 
 });
+
 
 function obtemFormDoPaciente(form){
 
@@ -50,18 +57,21 @@ function montaTr(paciente){
 
     }
 
-    function montaTd(dado, classe){
-        var td = document.createElement("td");
-        td.textContent = dado;
-        td.classList.add(classe);
+function montaTd(dado, classe){
+    var td = document.createElement("td");
+    td.textContent = dado;
+    td.classList.add(classe);
     
-        return td;
-    }
+    return td;
+}
 
-    function validaPaciente(paciente){
-        if(validaPeso(paciente.peso)){
-            return true;
-        } else {
-            return false;
-        }
-    }
+function validaPaciente(paciente){
+    
+    var erros = [];
+
+    if(!validaPeso(paciente)) erros.push("Peso invalido!");
+    if(!validaAltura(paciente)) erros.push("Altura Invalida");
+
+    return erros;
+
+}
